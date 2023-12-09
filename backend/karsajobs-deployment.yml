@@ -1,0 +1,36 @@
+apiVersion: apps/v1         # Versi dari API Kubernetes yang digunakan
+kind: Deployment            # Jenis sumber daya yang akan diterapkan
+metadata:            
+  name: karsajobs-backend   # Nama dari Deployment
+spec:                       # Spesifikasi perilaku yang diinginkan dari Deployment
+  replicas: 1               # Jumlah replika (pod) yang diinginkan
+  selector:          
+    matchLabels:     
+      app: backend          # Label dari pod yang dipilih
+  template:                 # Template yang akan digunakan untuk membuat pod
+    metadata:               # Metadata untuk pod
+      labels:        
+        app: backend        # Label yang akan diterapkan ke pod
+    spec:                   # Spesifikasi dari pod
+      containers:           # Daftar kontainer dalam pod
+      - name: karsajobs     # Nama dari kontainer
+        image: ghcr.io/firlanpamungkas/karsajobs:latest   # image yang digunakan untuk kontainer
+        imagePullPolicy: Always                           # Kebijakan untuk menarik gambar (Always, Never, atau IfNotPresent)
+        ports:                                            
+        - containerPort: 8080                             # Port kontainer
+        # Variabel lingkungan untuk kontainer
+        env:
+        - name: APP_PORT
+          value: '8080'
+        - name: MONGO_HOST
+          value: mongo-service  
+        - name: MONGO_USER  
+          valueFrom:  
+            secretKeyRef:  
+              name: mongo-credentials  
+              key: MONGO_ROOT_USERNAME  
+        - name: MONGO_PASS  
+          valueFrom:  
+            secretKeyRef:
+              name: mongo-credentials
+              key: MONGO_ROOT_PASSWORD
