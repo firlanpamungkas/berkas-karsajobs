@@ -1,0 +1,26 @@
+apiVersion: v1                # Versi API Kubernetes yang digunakan
+kind: PersistentVolume
+metadata:
+  name: mongo-pv-volume       # Nama dari PersistentVolume
+  labels:
+    type: local               # Label 'type' dengan nilai 'local'
+spec:                         # Spesifikasi untuk objek PersistentVolume
+  storageClassName: manual
+  capacity:                   # Kapasitas penyimpanan yang disediakan oleh PersistentVolume
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce           # Mode akses ReadWriteOnce berarti PersistentVolume dapat ditulis dan dibaca oleh satu Node
+  hostPath:
+    path: "/mnt/data/db"      # Lokasi direktori pada Node host
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pv-claim        # Nama dari PersistentVolumeClaim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
