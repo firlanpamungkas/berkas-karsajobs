@@ -1,0 +1,12 @@
+apiVersion: v1                # Versi dari API Kubernetes yang digunakan
+kind: Service                 # Jenis sumber daya yang akan diterapkan
+metadata:                     # Metadata tentang sumber daya
+  name: karsajobs-ui-service  # Nama dari Service
+  labels:        
+    app: frontend             # Label yang akan diterapkan ke Service
+spec:                         # Spesifikasi perilaku yang diinginkan dari Service
+  type: NodePort              # Tipe dari Service, dalam hal ini NodePort yang membuat Service dapat diakses dari luar kluster
+  ports:                      
+  - port: 8000                # Port Service
+  selector:                   # Selector label untuk pod yang akan dilayani oleh Service
+    app: frontend             # Label dari pod yang akan dilayani

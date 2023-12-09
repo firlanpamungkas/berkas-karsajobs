@@ -1,0 +1,23 @@
+apiVersion: apps/v1             # Versi dari API Kubernetes yang digunakan
+kind: Deployment                # Jenis sumber daya yang akan diterapkan
+metadata:                       # Metadata tentang sumber daya
+  name: karsajobs-ui-frontend   # Nama dari Deployment
+spec:                           # Spesifikasi perilaku yang diinginkan dari Deployment
+  replicas: 1                   # Jumlah replika (pod) yang diinginkan
+  selector:
+    matchLabels:     
+      app: frontend             # Label dari pod yang dipilih
+  template:
+    metadata:                   # Metadata untuk pod
+      labels:        
+        app: frontend           # Label yang akan diterapkan ke pod
+    spec:                       # Spesifikasi dari pod
+      containers:               # Daftar kontainer dalam pod
+      - name: karsajobsui       # Nama dari kontainer
+        image: ghcr.io/firlanpamungkas/karsajobs-ui:latest  # Image yang digunakan untuk kontainer
+        imagePullPolicy: Always                             # Kebijakan untuk menarik gambar (Always, Never, atau IfNotPresent)
+        ports:       
+        - containerPort: 8000   # Port yang didengarkan oleh kontainer
+        env:                    # Variabel lingkungan untuk kontainer
+        - name: VUE_APP_BACKEND
+          value: "http://127.0.0.1:31215"
